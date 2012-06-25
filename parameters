@@ -1,0 +1,28 @@
+blcloudpct      percentage boundary layer cloud
+blcwbase        boundary layer explicit cloudbase
+bltopvariab     thermal height uncertainty
+bltopwinddir    wind direction at top of boundary layer
+bltopwindspd    wind speed at top of boundary layer
+blwinddir       boundary layer wind direction
+blwindshear     boundary layer wind shear
+blwindspd       boundary layer wind speed
+bsratio         bouyancy/shear ratio
+cape            convective available potential energy
+dbl             boundary layer depth
+dwcrit          depth of critical updraft strength
+hbl             height of top of boundary layer
+hwcrit          height of critical updraft strength
+rain1           one-hour rain
+sfcdewpt        surface dew point
+sfcshf          surface heating
+sfcsunpct       normalized surface sun (percentage)
+sfcsun          surface sun (downward short-wave radiation flux)
+sfctemp         surface temperature
+sfcwinddir      surface wind direction
+sfcwindspd      surface wind speed
+wblmaxmin       boundary layer maximum up/down motion (convergence)
+wstar           thermal updraft velocity (W*)
+zblcldif        over-development potential
+zblcl           over-development cloudbase
+zsfclcldif      light cumulus potential
+zsfclcl         light cumulus cloudbase
