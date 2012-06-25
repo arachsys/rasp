@@ -1,0 +1,54 @@
+#!/bin/python
+
+from datetime import date, timedelta
+from urllib import urlencode
+from urllib2 import urlopen
+import os, sys
+
+def getday(lat, lon, day, fields):
+    source = 'http://rasp.inn.leedsmet.ac.uk/cgi-bin/get_rasp_blipspot.cgi'
+    query = urlencode({'region': 'UK+%d' % day, 'grid': 'd2', 'day': 0,
+                       'lat': lat, 'lon': lon, 'linfo': 0,
+                       'param': ' '.join(fields)})
+    text = urlopen(source + '?' + query).readlines()
+    points = zip(*[l.split() for l in text[:len(fields)]])
+    data = [dict(zip(fields, p)) for p in points]
+    for i, p in enumerate(data):
+        for k, v in p.items():
+            try: p[k] = float(v)
+            except ValueError: del p[k]
+        p['day']= (date.today() + timedelta(day)).strftime('%A')
+        p['time'] = '%02d:00' % (7 + i)
+    return data
+
+def getweek(lat, lon, fields):
+    return sum([getday(lat, lon, i, fields) for i in range(7)], [])
+
+def usage(argv):
+    sys.stderr.write('Usage: %s [LAT LON]\n' % os.path.basename(argv[0]))
+    return 64
+
+def main(argv):
+    if len(argv) == 1:
+        lat, lon = 52.5211, -2.8786
+    elif len(argv) == 3:
+        try:
+            lat, lon = float(argv[1]), float(argv[2])
+        except:
+            return usage(argv)
+    else:
+        return usage(argv)
+
+    dirs = 'N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW'.split()
+    print 'RASP surface wind forecast for (%0.4f, %0.4f):' % (lat, lon)
+    for p in getweek(lat, lon, ['rain1', 'sfcwindspd', 'sfcwinddir']):
+        if p['time'] not in ['10:00', '13:00', '16:00']:
+            continue
+        if 'rain1' in p and 'sfcwindspd' in p and 'sfcwinddir' in p:
+            print '%3.3s %s' % (p['day'], p['time']), \
+                  'wet' if p['rain1'] >= 0.3 else 'dry', \
+                  '%2.0fkt' % p['sfcwindspd'], \
+                  dirs[int(p['sfcwinddir']/22.5 - 0.5) % 16]
+
+if __name__ == '__main__':
+    main(sys.argv)
