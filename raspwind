@@ -31,24 +31,28 @@ def usage(argv):
 def main(argv):
     if len(argv) == 1:
         lat, lon = 52.5211, -2.8786
+        print 'RASP surface wind forecast for Long Mynd'
     elif len(argv) == 3:
         try:
             lat, lon = float(argv[1]), float(argv[2])
         except:
             return usage(argv)
+        print 'RASP surface wind forecast for (%0.4f, %0.4f):' % (lat, lon)
     else:
         return usage(argv)
 
     dirs = 'N NNE NE ENE E ESE SE SSE S SSW SW WSW W WNW NW NNW'.split()
-    print 'RASP surface wind forecast for (%0.4f, %0.4f):' % (lat, lon)
-    for p in getweek(lat, lon, ['rain1', 'sfcwindspd', 'sfcwinddir']):
-        if p['time'] not in ['10:00', '13:00', '16:00']:
+    params = ['rain1', 'sfcwindspd', 'sfcwinddir', 'starshg']
+    times = ['10:00', '13:00', '16:00']
+
+    for p in getweek(lat, lon, params):
+        if p['time'] not in times or any(k not in p for k in params):
             continue
-        if 'rain1' in p and 'sfcwindspd' in p and 'sfcwinddir' in p:
-            print '%3.3s %s' % (p['day'], p['time']), \
-                  'wet' if p['rain1'] >= 0.3 else 'dry', \
-                  '%2.0fkt' % p['sfcwindspd'], \
-                  dirs[int(p['sfcwinddir']/22.5 - 0.5) % 16]
+        p['sfcwinddir'] = dirs[int(p['sfcwinddir']/22.5 - 0.5) % 16]
+        print '%3.3s %s' % (p['day'], p['time']), \
+              'wet' if p['rain1'] >= 0.3 else 'dry', \
+              '%2.0fkt %-3s' % (p['sfcwindspd'], p['sfcwinddir']), \
+              '*' * int(p['starshg'])
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
