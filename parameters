@@ -1,5 +1,6 @@
 blcloudpct      percentage boundary layer cloud
 blcwbase        boundary layer explicit cloudbase
+blicw           boundary layer integrated cloud water
 bltopvariab     thermal height uncertainty
 bltopwinddir    wind direction at top of boundary layer
 bltopwindspd    wind speed at top of boundary layer
@@ -11,18 +12,30 @@ cape            convective available potential energy
 dbl             boundary layer depth
 dwcrit          depth of critical updraft strength
 hbl             height of top of boundary layer
+hglider         maximum thermalling height for gliders
 hwcrit          height of critical updraft strength
+mslpress        mean sea level atmospheric pressure in mBar
+press500        vertical velocity at 500mBar (from convergence/wave)
+press700        vertical velocity at 700mBar (from convergence/wave)
+press850        vertical velocity at 850mBar (from convergence/wave)
+press950        vertical velocity at 950mBar (from convergence/wave)
+press1000       vertical velocity at 1000mBar (from convergence/wave)
 rain1           one-hour rain
 sfcdewpt        surface dew point
 sfcshf          surface heating
 sfcsunpct       normalized surface sun (percentage)
 sfcsun          surface sun (downward short-wave radiation flux)
 sfctemp         surface temperature
-sfcwinddir      surface wind direction
-sfcwindspd      surface wind speed
+sfcwind0dir     surface wind direction 2m above the ground
+sfcwind0spd     surface wind speed 2m above the ground
+sfcwinddir      surface wind direction 10m above the ground
+sfcwindspd      surface wind speed 10m above the ground
+stars           star rating for glider flying conditions
+starshg         star rating for foot-launched flying conditions
 wblmaxmin       boundary layer maximum up/down motion (convergence)
 wstar           thermal updraft velocity (W*)
 zblcldif        over-development potential
 zblcl           over-development cloudbase
-zsfclcldif      light cumulus potential
-zsfclcl         light cumulus cloudbase
+zsfclcldif      light (non-extensive) cumulus potential
+zsfclcl         light (non-extensive) cumulus cloudbase
+zwblmaxmin      height of boundary layer maximum up/down motion
