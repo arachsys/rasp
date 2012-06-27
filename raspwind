@@ -51,4 +51,4 @@ def main(argv):
                   dirs[int(p['sfcwinddir']/22.5 - 0.5) % 16]
 
 if __name__ == '__main__':
-    main(sys.argv)
+    sys.exit(main(sys.argv))
