@@ -1,17 +1,17 @@
 #!/bin/python
 
 from datetime import date, timedelta
-from urllib import urlencode
-from urllib2 import urlopen
+from urllib.parse import urlencode
+from urllib.request import urlopen
 import os, sys
 
 def getday(lat, lon, day, fields):
-    source = 'http://rasp.inn.leedsmet.ac.uk/cgi-bin/get_rasp_blipspot.cgi'
+    source = 'http://rasp.mrsap.org/cgi-bin/get_rasp_blipspot.cgi'
     query = urlencode({'region': 'UK+%d' % day, 'grid': 'd2', 'day': 0,
                        'lat': lat, 'lon': lon, 'linfo': 0,
                        'param': ' '.join(fields)})
     text = urlopen(source + '?' + query).readlines()
-    points = zip(*[l.split() for l in text[:len(fields)]])
+    points = zip(*[l.decode().split() for l in text[:len(fields)]])
     data = [dict(zip(fields, p)) for p in points]
     for i, p in enumerate(data):
         p['day']= (date.today() + timedelta(day)).strftime('%A')
@@ -39,8 +39,8 @@ def main(argv):
     for p in getweek(lat, lon, params):
         if any(k not in p for k in params):
             continue
-        print '%3.3s %s' % (p['day'], p['time']), \
-              ' '.join(p[k] for k in params)
+        print('%3.3s %s' % (p['day'], p['time']), \
+              ' '.join(p[k] for k in params))
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

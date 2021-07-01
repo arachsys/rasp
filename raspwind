@@ -1,12 +1,12 @@
 #!/bin/python
 
 from datetime import date, timedelta
-from urllib import urlencode
-from urllib2 import urlopen
+from urllib.parse import urlencode
+from urllib.request import urlopen
 import os, sys
 
 def getday(lat, lon, day, fields):
-    source = 'http://rasp.inn.leedsmet.ac.uk/cgi-bin/get_rasp_blipspot.cgi'
+    source = 'http://rasp.mrsap.org/cgi-bin/get_rasp_blipspot.cgi'
     query = urlencode({'region': 'UK+%d' % day, 'grid': 'd2', 'day': 0,
                        'lat': lat, 'lon': lon, 'linfo': 0,
                        'param': ' '.join(fields)})
@@ -31,13 +31,13 @@ def usage(argv):
 def main(argv):
     if len(argv) == 1:
         lat, lon = 52.5211, -2.8786
-        print 'RASP surface wind forecast for Long Mynd'
+        print('RASP surface wind forecast for Long Mynd')
     elif len(argv) == 3:
         try:
             lat, lon = float(argv[1]), float(argv[2])
         except:
             return usage(argv)
-        print 'RASP surface wind forecast for (%0.4f, %0.4f):' % (lat, lon)
+        print('RASP surface wind forecast for (%0.4f, %0.4f):' % (lat, lon))
     else:
         return usage(argv)
 
@@ -49,10 +49,10 @@ def main(argv):
         if p['time'] not in times or any(k not in p for k in params):
             continue
         p['sfcwinddir'] = dirs[int(p['sfcwinddir']/22.5 - 0.5) % 16]
-        print '%3.3s %s' % (p['day'], p['time']), \
+        print('%3.3s %s' % (p['day'], p['time']), \
               'wet' if p['rain1'] >= 0.3 else 'dry', \
               '%2.0fkt %-3s' % (p['sfcwindspd'], p['sfcwinddir']), \
-              '*' * int(p['starshg'])
+              '*' * int(p['starshg']))
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
